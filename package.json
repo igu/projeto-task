@@ -1,0 +1,17 @@
+{
+  "name": "projeto-task",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Igor Alisson <igoralissoncn@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "prettier-eslint": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
