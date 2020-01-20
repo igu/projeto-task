@@ -12,6 +12,30 @@ app.use(express.json());
 
 const projects = [];
 
+/*  
+  ==============================================
+     MIDDLEWARES PROJECT-TASK LINES  23 AND 30
+  ==============================================
+*/
+
+function logAppReq(req, res, next) {
+  console.count("Contagem de requisições");
+  return next();
+}
+
+app.use(logAppReq);
+
+function projectExists(req, res, next) {
+  const { id } = req.params;
+  const project = projects.find(project => project.id == id);
+
+  if (!project) {
+    return res.status(400).json({ error: "project not exists" });
+  }
+
+  return next();
+}
+
 app.post("/projects", (req, res) => {
   const { id, title } = req.body;
 
@@ -29,7 +53,7 @@ app.get("/projects", (req, res) => {
   return res.json(projects);
 });
 
-app.put("/projects/:id", (req, res) => {
+app.put("/projects/:id", projectExists, (req, res) => {
   const { id } = req.params;
   const { title } = req.body;
 
@@ -39,16 +63,16 @@ app.put("/projects/:id", (req, res) => {
   return res.json(project);
 });
 
-app.delete("projects/:id", (req, res) => {
+app.delete("/projects/:id", projectExists, (req, res) => {
   const { id } = req.params;
 
   const indexProject = projects.findIndex(p => p.id == id);
-  projects.slice(indexProject, 1);
+  projects.splice(indexProject, 1);
 
-  return res.send("deleted");
+  return res.json(projects);
 });
 
-app.post("/projects/:id/tasks", (req, res) => {
+app.post("/projects/:id/tasks", projectExists, (req, res) => {
   const { id } = req.params;
   const { task } = req.body;
 
